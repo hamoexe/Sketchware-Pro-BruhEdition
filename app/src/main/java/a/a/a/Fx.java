@@ -1419,7 +1419,14 @@ public class Fx {
 
     private String getCodeExtraBlock(BlockBean blockBean, String var2) {
         ArrayList<String> parameters = new ArrayList<>();
-        ArrayList<String> paramsTypes = extractParamsTypes(blockBean.spec);
+        ExtraBlockInfo blockInfoForSpec = BlockLoader.getBlockInfo(blockBean.opCode);
+if (blockInfoForSpec.isMissing) {
+    blockInfoForSpec = BlockLoader.getBlockFromProject(buildConfig.sc_id, blockBean.opCode);
+}
+String spec2 = blockInfoForSpec.getSpec2();
+ArrayList<String> paramsTypes = extractParamsTypes(
+    blockBean.spec + (spec2 != null && !spec2.isEmpty() ? " " + spec2 : "")
+);
 
         for (int i = 0; i < blockBean.parameters.size(); i++) {
             String parameterValue = getParamValue(blockBean.parameters.get(i), paramsTypes.get(i));
