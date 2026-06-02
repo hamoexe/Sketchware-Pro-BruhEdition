@@ -38,6 +38,7 @@ public class Fx {
     public ArrayList<BlockBean> eventBlocks;
     public Map<String, BlockBean> blockMap;
     private final boolean isActivity;
+    private ArrayList<String> generatedImports = new ArrayList<>();
 
     public Fx(String activityName, jq buildConfig, ArrayList<BlockBean> eventBlocks, boolean isViewBindingEnabled) {
         this.activityName = activityName;
@@ -896,12 +897,12 @@ public class Fx {
             case "timerAfter":
                 String onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", params.get(0), onRun, params.get(0), params.get(1));
+                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));\n", params.get(0), onRun, params.get(0), params.get(1));
                 break;
             case "timerEvery":
                 onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
+                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));\n", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
                 break;
             case "timerCancel":
                 opcode = String.format("%s.cancel();", params.get(0));
@@ -942,12 +943,12 @@ public class Fx {
                 break;
             case "firebaseauthCreateUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), activityName, "_" + params.get(0) + "_create_user_listener");
+                    opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, _" + params.get(0) + "_create_user_listener);", params.get(0), params.get(1), params.get(2), activityName);
                 }
                 break;
             case "firebaseauthSignInUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), activityName, "_" + params.get(0) + "_sign_in_listener");
+                    opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, _" + params.get(0) + "_sign_in_listener);", params.get(0), params.get(1), params.get(2), activityName);
                 }
                 break;
             case "firebaseauthSignInAnonymously":
@@ -1128,12 +1129,12 @@ public class Fx {
                 break;
             case "firebasestorageUploadFile":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("%s.child(%s).putFile(Uri.fromFile(new File(%s))).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_upload_progress_listener).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {\n@Override\npublic Task<Uri> then(Task<UploadTask.TaskSnapshot> task) throws Exception {\nreturn %s.child(%s).getDownloadUrl();\n}}).addOnCompleteListener(_%s_upload_success_listener);", params.get(0), params.get(2), params.get(1), params.get(0), params.get(0), params.get(0), params.get(2), params.get(0));
+                    opcode = String.format("%s.child(%s).putFile(Uri.fromFile(new File(%s))).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_upload_progress_listener).continueWithTask(new Continuation() { @Override public Task then(@NonNull Task task) throws Exception { if (!task.isSuccessful()) { throw task.getException(); } return _%s_reference.getDownloadUrl(); } }).addOnCompleteListener(_%s_upload_success_listener);", params.get(0), params.get(1), params.get(2), params.get(0), params.get(0), params.get(0), params.get(0));
                 }
                 break;
             case "firebasestorageDownloadFile":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).getFile(new File(%s)).addOnSuccessListener(_%s_download_success_listener).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_download_progress_listener);", params.get(1), params.get(2), params.get(0), params.get(0), params.get(0));
+                    opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).getFile(new File(%s)).addOnSuccessListener(_%s_download_success_listener).addOnFailureListener(_%s_failure_listener);", params.get(1), params.get(2), params.get(0), params.get(0));
                 }
                 break;
             case "firebasestorageDelete":
@@ -1344,7 +1345,7 @@ public class Fx {
 
                 break;
             case "speechToTextStartListening":
-                opcode = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());\n%s.startListening(_intent);", params.get(0));
+                opcode = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);\nstartActivityForResult(_intent, REQ_CODE_SPEECH_INPUT);");
 
                 break;
             case "speechToTextStopListening":
@@ -1395,7 +1396,7 @@ public class Fx {
                 if (buildConfig.g) {
                     opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}", activityName, params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
                 } else {
-                    opcode = String.format("if (Build.VERSION.SDK_INT >= 23) {\nif (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}\n}\nelse {\n" + locationRequest + "\n}", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0), params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
+                    opcode = String.format("if (Build.VERSION.SDK_INT >= 23) {\nif (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}\n} else {\n" + locationRequest + "\n}", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0), params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
                 }
                 break;
 
