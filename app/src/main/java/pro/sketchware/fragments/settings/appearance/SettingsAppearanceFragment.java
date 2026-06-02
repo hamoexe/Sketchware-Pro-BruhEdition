@@ -109,6 +109,12 @@ public class SettingsAppearanceFragment extends qA {
                 ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
             }
         });
+        binding.themeAmoled.setOnClickListener(v -> {
+    if (!binding.switchSystem.isChecked()) {
+        updateThemeCardSelection(ThemeManager.THEME_AMOLED);
+        ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_AMOLED);
+    }
+});
     }
 
     private void updateThemeCardSelection(int theme) {
@@ -117,6 +123,7 @@ public class SettingsAppearanceFragment extends qA {
         MaterialCardView newSelection = switch (theme) {
             case ThemeManager.THEME_LIGHT -> binding.themeLight;
             case ThemeManager.THEME_DARK -> binding.themeDark;
+            case ThemeManager.THEME_AMOLED -> binding.themeAmoled;
             default -> null;
         };
 
@@ -136,10 +143,12 @@ public class SettingsAppearanceFragment extends qA {
     private void setThemeCardsEnabled(boolean enabled) {
         binding.themeLight.setEnabled(enabled);
         binding.themeDark.setEnabled(enabled);
+        binding.themeAmoled.setEnabled(enabled);
 
         float alpha = enabled ? 1.0f : 0.5f;
         binding.themeLight.animate().alpha(alpha).start();
         binding.themeDark.animate().alpha(alpha).start();
+        binding.themeAmoled.animate().alpha(alpha).start();
     }
 
     @Override

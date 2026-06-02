@@ -9,19 +9,22 @@ import androidx.appcompat.app.AppCompatDelegate;
 public class ThemeManager {
 
     public static final int THEME_SYSTEM = 0;
-    public static final int THEME_LIGHT = 1;
-    public static final int THEME_DARK = 2;
-    private static final String THEME_PREF = "themedata";
-    private static final String THEME_KEY = "idetheme";
+    public static final int THEME_LIGHT  = 1;
+    public static final int THEME_DARK   = 2;
+    public static final int THEME_AMOLED = 3;  // NEW
+
+    private static final String THEME_PREF   = "themedata";
+    private static final String THEME_KEY    = "idetheme";
+    private static final String AMOLED_KEY   = "amoled_enabled";
 
     public static void applyTheme(Context context, int type) {
         saveTheme(context, type);
-
         switch (type) {
             case THEME_LIGHT:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
             case THEME_DARK:
+            case THEME_AMOLED:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
             default:
@@ -37,12 +40,16 @@ public class ThemeManager {
         return getCurrentTheme(context) == THEME_SYSTEM;
     }
 
+    /** Returns true if AMOLED pure black mode is active */
+    public static boolean isAmoledTheme(Context context) {
+        return getCurrentTheme(context) == THEME_AMOLED;
+    }
+
     public static int getSystemAppliedTheme(Context context) {
         int nightModeFlags = context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
-
         return switch (nightModeFlags) {
-            case Configuration.UI_MODE_NIGHT_NO -> THEME_LIGHT;
+            case Configuration.UI_MODE_NIGHT_NO  -> THEME_LIGHT;
             case Configuration.UI_MODE_NIGHT_YES -> THEME_DARK;
             default -> THEME_SYSTEM;
         };

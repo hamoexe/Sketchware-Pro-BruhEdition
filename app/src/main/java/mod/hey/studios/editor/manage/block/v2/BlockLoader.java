@@ -121,6 +121,13 @@ public class BlockLoader {
                     info.setSpec2((String) spec2);
                 }
             }
+            
+            if (map.containsKey("imports")) {
+    Object imports = map.get("imports");
+    if (imports instanceof String) {
+        info.setImports((String) imports);
+    }
+}
 
             if (map.containsKey("code")) {
                 Object code = map.get("code");

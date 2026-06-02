@@ -126,6 +126,58 @@
                             android:textAppearance="?attr/textAppearanceBodyLarge" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+                
+                <!-- AMOLED option -->
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/theme_amoled"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="12dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerLarge">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mtrl_night"
+            app:tint="?attr/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AMOLED Black"
+                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Pure black background — saves battery on OLED screens"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/theme_dark"

@@ -1482,6 +1482,21 @@ ArrayList<String> paramsTypes = extractParamsTypes(
         if (blockInfo.isMissing) {
             blockInfo = BlockLoader.getBlockFromProject(buildConfig.sc_id, blockBean.opCode);
         }
+        
+        // Auto-inject imports declared in the custom block definition
+String blockImports = blockInfo.getImports();
+if (blockImports != null && !blockImports.isEmpty()) {
+    for (String imp : blockImports.split("\n")) {
+        imp = imp.trim();
+        if (!imp.isEmpty() && !imp.startsWith("//")) {
+            String importStatement = imp.startsWith("import ") ? imp : "import " + imp;
+            if (!importStatement.endsWith(";")) importStatement += ";";
+            if (!generatedImports.contains(importStatement)) {
+                generatedImports.add(importStatement);
+            }
+        }
+    }
+}
 
         String formattedCode;
         if (!parameters.isEmpty()) {
