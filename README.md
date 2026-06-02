@@ -2,14 +2,10 @@
   <img src="assets/Sketchware-Pro.png" style="width: 30%;" />
 </p>
 
-# Sketchware Pro
-[![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro)](https://github.com/Sketchware-Pro/Sketchware-Pro/graphs/contributors)
-[![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro)](https://github.com/Sketchware-Pro/Sketchware-Pro/commits/)
-[![Discord server stats](https://img.shields.io/discord/790686719753846785)](http://discord.gg/kq39yhT4rX)
-[![Total downloads](https://img.shields.io/github/downloads/Sketchware-Pro/Sketchware-Pro/total)](https://github.com/Sketchware-Pro/Sketchware-Pro/releases)
-[![Repository Size](https://img.shields.io/github/repo-size/Sketchware-Pro/Sketchware-Pro)](https://github.com/Sketchware-Pro/Sketchware-Pro)
+# Sketchware Pro Bruh Edition
+[![Repository Size](https://img.shields.io/github/repo-size/Sketchware-Pro/Sketchware-Pro)](https://github.com/Sketchware-Pro/Sketchware-Pro-BruhEdition)
 
-Welcome to Sketchware Pro! Here you'll find the source code of many classes in Sketchware Pro and, most importantly, the place to contribute to Sketchware Pro.
+Welcome to Sketchware Pro Bruh Edition! Here you'll find the source code of many classes in Sketchware Pro.
 
 ## Building the App
 To build the app, you must use Gradle. It's highly recommended to use Android Studio for the best experience.
@@ -32,7 +28,7 @@ To build the app, you must use Gradle. It's highly recommended to use Android St
 
 ## Contributing
 
-If you'd like to contribute to Sketchware Pro, follow these steps:
+If you'd like to contribute to Sketchware Pro Bruh Edition, follow these steps:
 
 1. Fork this repository.
 2. Make changes in your forked repository.
