@@ -1217,16 +1217,20 @@ public class ExtraPaletteBlock {
                                                 " of current palette has an invalid spec data type");
                                     }
                                 } else {
-                                    Object name = map.get("name");
-                                    if (name instanceof String nameString) {
+Object name = map.get("name");
+if (name instanceof String nameString) {
 
-                                        Object typeName = map.get("typeName");
-                                        if (typeName instanceof String typeNameString) {
+    Object spec = map.get("spec");
+    Object spec2 = map.get("spec2");
+    String specStr = (spec instanceof String) ? (String) spec : "";
+    String spec2Str = (spec2 instanceof String) ? (String) spec2 : "";
 
-                                            logicEditor.a("", typeString, typeNameString, nameString);
-                                        } else {
-                                            logicEditor.a("", typeString, "", nameString);
-                                        }
+    Object typeName = map.get("typeName");
+    if (typeName instanceof String typeNameString) {
+        logicEditor.a(specStr, typeString, typeNameString, nameString);
+    } else {
+        logicEditor.a(specStr, typeString, "", nameString);
+    }
                                     } else {
                                         SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
                                                 " of current palette has an invalid name data type");
